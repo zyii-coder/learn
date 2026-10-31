@@ -13,6 +13,7 @@ Git 学习与实践仓库。记录常用命令、工作流和踩坑经验。
 | [notes/04-undo.md](notes/04-undo.md) | 撤销、回退与找回 |
 | [notes/05-rebase-and-stash.md](notes/05-rebase-and-stash.md) | 变基与暂存 |
 | [practice/README.md](practice/README.md) | 练习区说明 |
+| [tasklist-java/README.md](tasklist-java/README.md) | Java 练习：命令行任务清单（类 + 接口 + ArrayList） |
 
 ## 核心模型：三个区域
 
