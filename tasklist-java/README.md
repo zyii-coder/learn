@@ -52,6 +52,14 @@ Windows：
 run.bat
 ```
 
+PowerShell 里也一样，`.\tasklist-java\run.bat` 就行 —— 脚本第一行 `cd /d "%~dp0"` 会自己切回
+`tasklist-java`，所以在仓库根目录敲也没问题。
+
+> 但**别用管道把命令喂进去**（`@('add 买牛奶') | .\run.bat`）。PowerShell 5.1 往子进程 stdin
+> 写字时用的是控制台编码（中文 Windows 上是 GBK），而 `run.bat` 让 JVM 按 UTF-8 读，
+> 中文会变成 `??ţ??` 这种乱码；管道里还会混进一个 BOM，第一条命令变成 `﻿add` 直接不认。
+> 键盘直接敲没有这个问题：控制台代码页是 65001，和 `-Dstdin.encoding=UTF-8` 是一致的。
+
 Git Bash / macOS / Linux：
 
 ```bash

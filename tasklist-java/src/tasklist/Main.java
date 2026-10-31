@@ -20,31 +20,35 @@ public class Main {
         // 不要在代码里把 System.out 硬改成 UTF-8。
         // JDK 18+ 会按控制台实际代码页输出，GBK 终端和 chcp 65001 的终端都能正常显示中文；
         // 硬写 UTF-8 反而会让中文 Windows 的默认终端（代码页 936）变乱码。
-        Scanner in = new Scanner(System.in);
 
-        if (args.length > 0) {
-            // 支持一次性执行：java -cp out tasklist.Main add 买牛奶 #h
-            runLine(String.join(" ", args));
-            return;
-        }
+        // try-with-resources：不管从哪条路径退出（exit 命令、Ctrl+D、参数模式），
+        // Scanner 都会被关掉。写成手动 in.close() 的话，前面 return 的那条路径就漏了，
+        // IDE 照样会提示 Resource leak。
+        try (Scanner in = new Scanner(System.in)) {
+            if (args.length > 0) {
+                // 支持一次性执行：java -cp out tasklist.Main add 买牛奶 #h
+                runLine(String.join(" ", args));
+                return;
+            }
 
-        banner();
-        while (true) {
-            System.out.print("task> ");
-            System.out.flush();
-            if (!in.hasNextLine()) {          // Ctrl+D 或管道读完，直接退出
-                System.out.println();
-                break;
+            banner();
+            while (true) {
+                System.out.print("task> ");
+                System.out.flush();
+                if (!in.hasNextLine()) {          // Ctrl+D 或管道读完，直接退出
+                    System.out.println();
+                    break;
+                }
+                String line = in.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                if (!runLine(line)) {              // 返回 false 代表用户要退出
+                    break;
+                }
             }
-            String line = in.nextLine().trim();
-            if (line.isEmpty()) {
-                continue;
-            }
-            if (!runLine(line)) {              // 返回 false 代表用户要退出
-                break;
-            }
+            System.out.println("再见。");
         }
-        System.out.println("再见。");
     }
 
     /** 执行一条命令，返回 false 表示退出程序 */
