@@ -25,22 +25,26 @@ tasklist-java/
 用 VSCode 打开本目录（`tasklist-java`，不是仓库根目录），装好 Extension Pack for Java 之后：
 
 - **按 `F5`** → 选「任务清单（交互模式）」，在集成终端里跑，可以直接敲命令
+- **按 `Ctrl+Shift+B`** → 跑默认生成任务，效果同 `run.bat`（会先编译再启动）
 - 或者点 `Main.java` 里 `main` 方法上方的 `Run`
 - 退出：输入 `exit`，或 `Ctrl+C`
 
-`.vscode/` 里已经配好两件事：
+`.vscode/` 里已经配好三件事：
 
 | 文件 | 作用 |
 | --- | --- |
 | `settings.json` | 告诉 Java 扩展源码在 `src/`、编译产物去 `out/` |
-| `launch.json` | 调试配置，`console` 设成 `integratedTerminal` |
+| `launch.json` | F5 调试配置，`console` 设成 `integratedTerminal` |
+| `tasks.json` | `Ctrl+Shift+B` 调 `run.bat` |
 
 > `console` 必须是 `integratedTerminal`。程序用 `Scanner` 读键盘，VSCode 默认的
 > 调试控制台（`internalConsole`）**不能输入**，会看起来像卡死。
 
 ## 怎么跑（命令行）
 
-需要 JDK（只装 JRE 不行，要有 `javac`）。
+需要 JDK（只装 JRE 不行，要有 `javac`）。两个脚本都会**自己找 JDK**：先看 `JAVA_HOME`，
+没有再在 `~/.jdks` 下找一个能用的。所以就算终端的 `PATH` 还没刷新、甚至环境变量没生效，
+直接跑也不会报"找不到 javac"。
 
 Windows：
 
@@ -52,6 +56,12 @@ Git Bash / macOS / Linux：
 
 ```bash
 bash run.sh
+```
+
+带参数执行一条命令就退出（不进交互）：
+
+```bat
+run.bat add 买牛奶 #h
 ```
 
 也可以手动编译：
